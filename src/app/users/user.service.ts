@@ -17,7 +17,11 @@ export class UserService {
     return this.http.post<User>(`${this.baseUrl}`, registrationInfo);
   }
 
+  getUserById(id: string): Observable<User | null> {
+    return this.http.get<User | null>(`${this.baseUrl}/${id}`);
+  }
+
   getUserByUsername(username: string): Observable<User | null> {
-    return this.http.get<User | null>(`${this.baseUrl}/${username}`);
+    return this.http.get<User | null>(`${this.baseUrl}/username=${username}`);
   }
 }

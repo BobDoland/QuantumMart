@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ItemListing } from './item-listing.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,5 +11,15 @@ export class ItemListingService {
 
   constructor(private http: HttpClient) {}
 
-  
+  getAllListings(): Observable<ItemListing[]> {
+    return this.http.get<ItemListing[]>(`${this.baseUrl}`);
+  }
+
+  getAllListingsByUsername(username: string): Observable<ItemListing[]> {
+    return this.http.get<ItemListing[]>(`${this.baseUrl}/seller=${username}`);
+  }
+
+  getListingById(id: string): Observable<ItemListing> {
+    return this.http.get<ItemListing>(`${this.baseUrl}/${id}`);
+  }
 }
