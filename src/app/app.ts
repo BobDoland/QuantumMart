@@ -2,10 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { MatTabsModule, MatTabNav } from '@angular/material/tabs';
 import { Router, RouterOutlet, RouterLinkWithHref } from '@angular/router';
+import { AuthService } from './auth/auth.service';
+import { MatCard, MatCardTitle, MatCardHeader, MatCardAvatar, MatCardActions, MatCardContent, MatCardSubtitle } from "@angular/material/card";
+import { MatAnchor } from "@angular/material/button";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLinkWithHref, MatTabsModule, MatTabNav],
+  imports: [RouterOutlet, RouterLinkWithHref, MatTabsModule, MatTabNav, MatCard, MatCardTitle, MatCardHeader, MatCardAvatar, MatCardSubtitle],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -16,7 +19,19 @@ export class AppComponent {
 
   private readonly hiddenRoutes = ['/login', '/register'];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
+
+  get username(): string | null {
+    return this.authService.username;
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
   showNavBar(): boolean {
     return !this.hiddenRoutes.includes(this.router.url);

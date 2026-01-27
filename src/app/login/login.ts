@@ -4,9 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { AuthService } from '../auth/auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +28,10 @@ export class LoginComponent {
 
   btnLoginDisabled = true;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   formValid(): boolean {
     this.btnLoginDisabled = !this.loginForm.valid;
@@ -42,15 +44,14 @@ export class LoginComponent {
       const username = this.loginForm.value.username!;
       const password = this.loginForm.value.password!;
 
-      this.authService.passwordMatches(username, password).subscribe({
-        next: matches => {
-          if (matches) {
-            alert("User can login!");
-          } else {
-            alert("Invalid username or password.");
-          }
+      this.authService.login(username, password).subscribe({
+        next: res => {
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('username', res.username);
+          
+          this.router.navigate(['/home']);
         },
-        error: (err: HttpErrorResponse) => alert(err.message)
+        error: _ => alert("Invalid credentials.")
       });
     }
   }
