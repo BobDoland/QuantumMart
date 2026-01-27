@@ -3,8 +3,7 @@ import { Component, inject, signal } from '@angular/core';
 import { MatTabsModule, MatTabNav } from '@angular/material/tabs';
 import { Router, RouterOutlet, RouterLinkWithHref } from '@angular/router';
 import { AuthService } from './auth/auth.service';
-import { MatCard, MatCardTitle, MatCardHeader, MatCardAvatar, MatCardActions, MatCardContent, MatCardSubtitle } from "@angular/material/card";
-import { MatAnchor } from "@angular/material/button";
+import { MatCard, MatCardTitle, MatCardHeader, MatCardAvatar, MatCardSubtitle } from "@angular/material/card";
 
 @Component({
   selector: 'app-root',
@@ -28,7 +27,7 @@ export class AppComponent {
     return this.authService.username;
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
